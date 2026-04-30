@@ -61,6 +61,15 @@ install_bun() {
   fi
 }
 
+install_graphite_cli() {
+  if command_exists gt; then
+    log "Graphite CLI is already installed"
+  else
+    log "Installing Graphite CLI"
+    brew install withgraphite/tap/graphite
+  fi
+}
+
 install_claude_code() {
   if command_exists claude; then
     log "Claude Code is already installed"
@@ -78,13 +87,17 @@ main() {
 
   brew_install_cask "google-chrome"
   brew_install_cask "1password"
+  brew_install_cask "slack"
   brew_install_formula "1password-cli"
+  brew_install_formula "gh"
+  install_graphite_cli
   install_bun
   brew_install_cask "cursor"
   install_claude_code
 
   log "Setup complete"
-  echo "Open Chrome, 1Password, Cursor, and Claude Code to finish any sign-in prompts."
+  echo "Open Chrome, 1Password, Slack, Cursor, and Claude Code to finish any sign-in prompts."
+  echo "Run 'gh auth login' and 'gt auth login' to authenticate the GitHub and Graphite CLIs."
   echo "If this is your first Homebrew install, restart your terminal so PATH changes are available everywhere."
 }
 

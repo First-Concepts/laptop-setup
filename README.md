@@ -8,6 +8,9 @@ macOS setup script for First Concepts employees.
 - Google Chrome
 - 1Password desktop app
 - 1Password CLI
+- Slack desktop app
+- GitHub CLI
+- Graphite CLI
 - Bun
 - Cursor
 - Claude Code
@@ -27,4 +30,4 @@ chmod +x setup-macos.sh
 ./setup-macos.sh
 ```
 
-The script may prompt for your macOS password during Homebrew or app installation. After it finishes, open Chrome, 1Password, Cursor, and Claude Code to complete sign-in.
+The script may prompt for your macOS password during Homebrew or app installation. After it finishes, open Chrome, 1Password, Slack, Cursor, and Claude Code to complete sign-in. Run `gh auth login` and `gt auth login` to authenticate the GitHub and Graphite CLIs.
