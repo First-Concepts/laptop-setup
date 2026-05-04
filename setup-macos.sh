@@ -61,6 +61,28 @@ install_bun() {
   fi
 }
 
+configure_zshrc_for_nvm() {
+  local zshrc="$HOME/.zshrc"
+  local nvm_dir_line='export NVM_DIR="$HOME/.nvm"'
+  local nvm_source_line='[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+
+  touch "$zshrc"
+
+  if grep -Fxq "$nvm_dir_line" "$zshrc" && grep -Fxq "$nvm_source_line" "$zshrc"; then
+    log "nvm is already configured in ~/.zshrc"
+  else
+    log "Configuring nvm in ~/.zshrc"
+    {
+      printf "\n"
+      printf "%s\n" "$nvm_dir_line"
+      printf "%s\n" "$nvm_source_line"
+    } >>"$zshrc"
+  fi
+
+  log "Sourcing ~/.zshrc"
+  zsh -lc "source '$zshrc'"
+}
+
 install_node_with_nvm() {
   export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
 
@@ -83,6 +105,7 @@ install_node_with_nvm() {
   log "Installing Node.js 24 with nvm"
   nvm install 24 --default
   nvm use 24
+  configure_zshrc_for_nvm
 }
 
 install_graphite_cli() {
@@ -100,6 +123,14 @@ install_claude_code() {
   else
     log "Installing Claude Code"
     curl -fsSL https://claude.ai/install.sh | bash
+  fi
+}
+
+start_configured_zsh() {
+  if [[ -t 0 && -t 1 ]]; then
+    log "Starting zsh with ~/.zshrc loaded"
+    echo "Type 'exit' to return to the shell that launched this setup script."
+    exec zsh -l
   fi
 }
 
@@ -124,7 +155,8 @@ main() {
   echo "Open Chrome, 1Password, Slack, Cursor, and Claude Code to finish any sign-in prompts."
   echo "Node.js 24 was installed through nvm and set as the default Node.js version."
   echo "Run 'gh auth login' and 'gt auth login' to authenticate the GitHub and Graphite CLIs."
-  echo "If this is your first Homebrew install, restart your terminal so PATH changes are available everywhere."
+  echo "The setup will start zsh in this terminal so ~/.zshrc is loaded immediately."
+  start_configured_zsh
 }
 
 main "$@"
