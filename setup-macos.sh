@@ -61,6 +61,30 @@ install_bun() {
   fi
 }
 
+install_node_with_nvm() {
+  export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+
+  if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then
+    log "Installing nvm"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+  else
+    log "nvm is already installed"
+  fi
+
+  if [[ ! -s "$NVM_DIR/nvm.sh" ]]; then
+    echo "nvm installed, but $NVM_DIR/nvm.sh was not found." >&2
+    exit 1
+  fi
+
+  # nvm is a shell function, so it needs to be sourced before use in this script.
+  # shellcheck source=/dev/null
+  . "$NVM_DIR/nvm.sh"
+
+  log "Installing Node.js 24 with nvm"
+  nvm install 24 --default
+  nvm use 24
+}
+
 install_graphite_cli() {
   if command_exists gt; then
     log "Graphite CLI is already installed"
@@ -91,12 +115,14 @@ main() {
   brew_install_formula "1password-cli"
   brew_install_formula "gh"
   install_graphite_cli
+  install_node_with_nvm
   install_bun
   brew_install_cask "cursor"
   install_claude_code
 
   log "Setup complete"
   echo "Open Chrome, 1Password, Slack, Cursor, and Claude Code to finish any sign-in prompts."
+  echo "Node.js 24 was installed through nvm and set as the default Node.js version."
   echo "Run 'gh auth login' and 'gt auth login' to authenticate the GitHub and Graphite CLIs."
   echo "If this is your first Homebrew install, restart your terminal so PATH changes are available everywhere."
 }
