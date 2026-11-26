@@ -108,14 +108,6 @@ install_node_with_nvm() {
   configure_zshrc_for_nvm
 }
 
-install_graphite_cli() {
-  if command_exists gt; then
-    log "Graphite CLI is already installed"
-  else
-    log "Installing Graphite CLI"
-    brew install withgraphite/tap/graphite
-  fi
-}
 
 install_claude_code() {
   if command_exists claude; then
@@ -145,7 +137,6 @@ main() {
   brew_install_cask "slack"
   brew_install_formula "1password-cli"
   brew_install_formula "gh"
-  install_graphite_cli
   install_node_with_nvm
   install_bun
   brew_install_cask "cursor"
@@ -154,7 +145,7 @@ main() {
   log "Setup complete"
   echo "Open Chrome, 1Password, Slack, Cursor, and Claude Code to finish any sign-in prompts."
   echo "Node.js 24 was installed through nvm and set as the default Node.js version."
-  echo "Run 'gh auth login' and 'gt auth login' to authenticate the GitHub and Graphite CLIs."
+  echo "Run 'gh auth login' to authenticate the GitHub CLI."
   echo "The setup will start zsh in this terminal so ~/.zshrc is loaded immediately."
   start_configured_zsh
 }
