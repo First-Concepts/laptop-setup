@@ -10,7 +10,6 @@ macOS setup script for First Concepts employees.
 - 1Password CLI
 - Slack desktop app
 - GitHub CLI
-- Graphite CLI
 - nvm
 - Node.js 24 through nvm
 - Bun
@@ -32,4 +31,4 @@ chmod +x setup-macos.sh
 ./setup-macos.sh
 ```
 
-The script may prompt for your macOS password during Homebrew or app installation. It installs Node.js 24 through nvm, writes the nvm setup block to `~/.zshrc`, sources `~/.zshrc`, sets Node.js 24 as the default Node.js version, and starts zsh in the same terminal so the new config is available immediately. After it finishes, open Chrome, 1Password, Slack, Cursor, and Claude Code to complete sign-in. Run `gh auth login` and `gt auth login` to authenticate the GitHub and Graphite CLIs.
+The script may prompt for your macOS password during Homebrew or app installation. It installs Node.js 24 through nvm, writes the nvm setup block to `~/.zshrc`, sources `~/.zshrc`, sets Node.js 24 as the default Node.js version, and starts zsh in the same terminal so the new config is available immediately. After it finishes, open Chrome, 1Password, Slack, Cursor, and Claude Code to complete sign-in. Run `gh auth login` to authenticate the GitHub CLI.
